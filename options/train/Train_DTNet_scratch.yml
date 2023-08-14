@@ -38,11 +38,10 @@ datasets:
 
 # network structures
 network_g:
-  type: VD_V048_g
+  type: DTNet_g
 
 network_f:
-  type: VD_V048_f
-  window_size: 8
+  type: DTNet_f
 
 path:
   pretrain_network_g: ~

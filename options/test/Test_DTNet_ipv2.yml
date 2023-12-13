@@ -1,0 +1,42 @@
+name: Test_DTNet_ipv2.yml
+model_type: MultiFrameVDModel
+num_gpu: 1  # set num_gpu: 0 for cpu mode
+manual_seed: 0
+
+datasets:
+  test:
+    name: MultiFrameVD
+    type: MultiFrameVDPairedImageDataset
+    dataroot_gt: datasets/of/iphone/test/target
+    dataroot_lq: datasets/of/iphone/test/source
+    io_backend:
+      type: disk
+    batch_size: 1
+    num_worker: 0
+
+# network structures
+network_g:
+  type: DTNet_g
+
+network_f:
+  type: DTNet_f
+
+
+# path
+path:
+  pretrain_network_g: experiments/Train_DTNet_resume_ipv2.yml/models/DTNet_g.pth
+  strict_load_g: false
+  param_key_g: 'params_ema'
+
+  pretrain_network_f: experiments/Train_DTNet_resume_ipv2.yml/models/DTNet_f.pth
+  strict_load_f: false
+
+# validation settings
+val:
+  save_img: false
+  metrics:
+    psnr:
+      type: calculate_vd_psnr
+    ssim:
+      type: calculate_vd_ssim
+

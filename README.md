@@ -1,5 +1,7 @@
 # DTNet
-Direction-aware Video Demoiréing with Temporal-guided Bilateral Learning
+**[AAAI-2024] Direction-aware Video Demoiréing with Temporal-guided Bilateral Learning**
+
+[Paper Link](https://arxiv.org/abs/2308.13388)
 
 
 
@@ -7,22 +9,26 @@ Direction-aware Video Demoiréing with Temporal-guided Bilateral Learning
 
 * basicsr==1.4.2
 * scikit-image==0.15.0
+* deepspeed
 
 
 
-### Dataset Preparation
+### Prepare
 
-* Download dataset from [Data-V1](https://www.dropbox.com/sh/5pkntn20785gqqj/AADmYCroOu5YDhzGam6Nhoz9a?dl=0) and [Data-V2](https://www.dropbox.com/sh/7trmzm2slm2qlg8/AADt3e8MH_52EyLKFtZwXirJa?dl=0). Unzip and copy the files to  `data`.
-* Download and unzip our pre-trained model, and copy it to `experiments/Train_DTNet_resume.yml/models`.
+1. **Download [VDMoire dataset](https://github.com/CVMI-Lab/VideoDemoireing).**
+2. **Download the [pretrined models](https://www.dropbox.com/scl/fi/sfiypguwynxwfvghjoeij/experiments.zip?rlkey=n6wr63odbmnlhh6ydavpag2kd&dl=0).**
 
 Organize the directories as follows:
 
 ```
 ┬─ experiments
-│   └─ Train_DTNet_resume.yml
-│		└─ models
-│       	├─ DTNet_f.pth
-│     	 	└─ DTNet_g.pth
+│   └─ Train_DTNet_resume_ipv1.yml
+│	│	└─ models
+│   │    	├─ DTNet_f.pth
+│   │  	 	└─ DTNet_g.pth
+│   └─ Train_DTNet_resume_ipv2.yml
+│   └─ Train_DTNet_resume_tclv1.yml
+│   └─ Train_DTNet_resume_tclv2.yml
 └─ data
     ├─ homo
     │   ├─ iphone
@@ -47,12 +53,10 @@ Organize the directories as follows:
 
 ### How to Test
 
-* Download the pre-trained model
-
 * Example: Testing on the TCL-V2 dataset
 
 ```python
-PYTHONPATH="./:${PYTHONPATH}" CUDA_VISIBLE_DEVICES=0 python test.py -opt options/test/Test_DTNet.yml
+PYTHONPATH="./:${PYTHONPATH}" CUDA_VISIBLE_DEVICES=0 python test.py -opt options/test/Test_DTNet_tclv2.yml
 ```
 
 
@@ -62,7 +66,7 @@ PYTHONPATH="./:${PYTHONPATH}" CUDA_VISIBLE_DEVICES=0 python test.py -opt options
 * Single GPU training
 
 ```python
-PYTHONPATH="./:${PYTHONPATH}" CUDA_VISIBLE_DEVICES=0 python train.py -opt options/train/Train_DTNet_scratch.yml
+PYTHONPATH="./:${PYTHONPATH}" CUDA_VISIBLE_DEVICES=0 python train.py -opt options/train/Train_DTNet_scratch_ipv1.yml
 ```
 
 * Distributed training
@@ -70,5 +74,6 @@ PYTHONPATH="./:${PYTHONPATH}" CUDA_VISIBLE_DEVICES=0 python train.py -opt option
 ```python
 PYTHONPATH="./:${PYTHONPATH}" \
 CUDA_VISIBLE_DEVICES=0,1,2,3 \
-python -m torch.distributed.launch --nproc_per_node=4 --master_port=4321 train.py -opt options/train/Train_DTNet_scratch.yml --launcher pytorch
+python -m torch.distributed.launch --nproc_per_node=4 --master_port=4321 train.py -opt options/train/Train_DTNet_scratchipv1.yml --launcher pytorch
 ```
+
